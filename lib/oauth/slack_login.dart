@@ -43,13 +43,14 @@ class _SlackLoginWebViewPageState extends State<SlackLoginWebViewPage> {
           Uri uri = new Uri().resolve(changedUrl);
           String code = uri.queryParameters["code"];
 
-          final http.Response response =
-              await http.post("https://slack.com/api/oauth.access", body: {
-            "client_id": widget.clientId,
-            "redirect_uri": widget.redirectUrl,
-            "client_secret": widget.clientSecret,
-            "code": code,
-          });
+          final http.Response response = await http.post(
+              new Uri.http("https://slack.com", "/api/oauth.access"),
+              body: {
+                "client_id": widget.clientId,
+                "redirect_uri": widget.redirectUrl,
+                "client_secret": widget.clientSecret,
+                "code": code,
+              });
 
           Token token = new Token.fromMap(json.decode(response.body));
           await Token.storeAccessToken(token.accessToken);
